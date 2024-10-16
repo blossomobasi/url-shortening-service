@@ -1,5 +1,16 @@
-function add(num1: number, num2: number): number {
-    return num1 + num2;
-}
+import express from "express";
+import connectDB from "./db/db";
+import routes from "./routes/routes";
 
-add(2, 3); // 5
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+routes(app);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, async () => {
+    await connectDB();
+    console.log(`Server running on port ${PORT}`);
+});
