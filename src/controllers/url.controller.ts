@@ -2,23 +2,6 @@ import { generateShortenedURL } from "../utils";
 import URL from "../models/url.model";
 import { Request, Response } from "express";
 
-export const getAllUrls = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const urls = await URL.find();
-
-        res.status(200).json({
-            status: "success",
-            results: urls.length,
-            data: urls,
-        });
-    } catch (error: any) {
-        res.status(500).json({
-            status: "fail",
-            message: error.message,
-        });
-    }
-};
-
 export const createShortURL = async (req: Request, res: Response): Promise<void> => {
     try {
         const { url } = req.body;
@@ -37,7 +20,7 @@ export const createShortURL = async (req: Request, res: Response): Promise<void>
 };
 export const getOriginalURL = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { shortUrl } = req.body;
+        const shortUrl = req.params.shortUrl;
         if (!shortUrl) {
             res.status(400).json({
                 status: "fail",
@@ -58,7 +41,7 @@ export const getOriginalURL = async (req: Request, res: Response): Promise<void>
 
         res.status(200).json({
             status: "success",
-            data: { originalUrl: originalUrl.originalUrl },
+            data: { originalUrl },
         });
     } catch (err: any) {
         res.status(500).json({
@@ -70,7 +53,8 @@ export const getOriginalURL = async (req: Request, res: Response): Promise<void>
 
 export const updateShortURL = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { shortUrl, newUrl } = req.body;
+        const shortUrl = req.params.shortUrl;
+        const { newUrl } = req.body;
         if (!shortUrl || !newUrl) {
             res.status(400).json({
                 status: "fail",
@@ -109,7 +93,7 @@ export const updateShortURL = async (req: Request, res: Response): Promise<void>
 
 export const deleteShortURL = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { shortUrl } = req.body;
+        const shortUrl = req.params.shortUrl;
         if (!shortUrl) {
             res.status(400).json({
                 status: "fail",
