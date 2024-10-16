@@ -8,7 +8,7 @@ export default function routes(app: Express) {
             message: "URL Shortening Service",
         });
     });
-    app.use("/api/urls", urlRoutes);
+    app.use("/api/urls/shorten", urlRoutes);
 
     app.all("*", (req: Request, res: Response) => {
         res.status(404).json({
